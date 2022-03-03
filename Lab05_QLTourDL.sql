@@ -54,7 +54,7 @@ select * from ThanhPho
 insert into Tour_TP values ('T001', '01', 2)
 insert into Tour_TP values ('T001', '03', 1)
 insert into Tour_TP values ('T002', '01', 2)
-insert into Tour_TP values ('T002', '02', '2)
+insert into Tour_TP values ('T002', '02', 2)
 insert into Tour_TP values ('T003', '02', 2)
 insert into Tour_TP values ('T003', '01', 1)
 insert into Tour_TP values ('T003', '04', 2)
