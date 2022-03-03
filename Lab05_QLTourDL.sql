@@ -51,16 +51,16 @@ insert into ThanhPho values ('05', N'Đà Nẵng')
 insert into ThanhPho values ('01', N'Đà Lạt')
 select * from ThanhPho
 
-insert into Tour_TP values ('T001', '01', '2')
-insert into Tour_TP values ('T001', '03', '1')
-insert into Tour_TP values ('T002', '01', '2')
-insert into Tour_TP values ('T002', '02', '2')
-insert into Tour_TP values ('T003', '02', '2')
-insert into Tour_TP values ('T003', '01', '1')
-insert into Tour_TP values ('T003', '04', '2')
-insert into Tour_TP values ('T004', '02', '2')
-insert into Tour_TP values ('T004', '05', '2')
-insert into Tour_TP values ('T004', '04', '3')
+insert into Tour_TP values ('T001', '01', 2)
+insert into Tour_TP values ('T001', '03', 1)
+insert into Tour_TP values ('T002', '01', 2)
+insert into Tour_TP values ('T002', '02', '2)
+insert into Tour_TP values ('T003', '02', 2)
+insert into Tour_TP values ('T003', '01', 1)
+insert into Tour_TP values ('T003', '04', 2)
+insert into Tour_TP values ('T004', '02', 2)
+insert into Tour_TP values ('T004', '05', 2)
+insert into Tour_TP values ('T004', '04', 3)
 select * from Tour_TP
 
 set dateformat dmy
