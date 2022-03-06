@@ -29,10 +29,11 @@ NgayPH		datetime
 
 create table DATBAO
 (
-MaKH			char (4) references KHACHHANG (MaKH),
+MaKH		char (4) references KHACHHANG (MaKH),
 MaBaoTC	char (4) references BAO_TCHI (MaBaoTC),
 SLMua		int,
-NgayDM		datetime
+NgayDM		datetime,
+primary key (MaKH,MaBaoTC)
 )
 
 --Reivew--
