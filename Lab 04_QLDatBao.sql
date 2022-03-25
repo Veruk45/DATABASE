@@ -7,22 +7,22 @@ go
 create table KHACHHANG
 (
 MaKH  char (4) primary key,
-TenKH nvarchar (10),
+TenKH nvarchar (10) not null unique,
 DiaChi nvarchar(15)
 )
 
 create table BAO_TCHI
 (
-MaBaoTC char (4) primary key,
-Ten			  nvarchar (30),
-DinhKy	  nvarchar (20),
+MaBaoTC	  char (4) primary key,
+Ten		  nvarchar(30) not null,
+DinhKy	  nvarchar(20),
 SoLuong	  int,
 GiaBan	  int
 )
 
 create table PHATHANH
 (
-MaBaoTC	char (4) references BAO_TCHI (MaBaoTC),
+MaBaoTC		char (4) references BAO_TCHI (MaBaoTC),
 SoBaoTC		int,
 NgayPH		datetime
 )
@@ -30,7 +30,7 @@ NgayPH		datetime
 create table DATBAO
 (
 MaKH		char (4) references KHACHHANG (MaKH),
-MaBaoTC	char (4) references BAO_TCHI (MaBaoTC),
+MaBaoTC		char (4) references BAO_TCHI (MaBaoTC),
 SLMua		int,
 NgayDM		datetime,
 primary key (MaKH,MaBaoTC)
@@ -55,7 +55,6 @@ select * from BAO_TCHI
 
 go
 set dateformat dmy
-select convert(varchar, getdate(), 103)
 insert into PHATHANH values ('TT01',123,'15/12/2005')
 insert into PHATHANH values ('KT01',70,'15/12/2005')
 insert into PHATHANH values ('TT01',124,'16/12/2005')
@@ -77,3 +76,58 @@ insert into DATBAO values ('KH03', 'PN02', 200, '26/08/2003')
 insert into DATBAO values ('KH02', 'TT01', 250, '15/01/2004')
 insert into DATBAO values ('KH01', 'KT01', 300, '14/10/2004')
 select * from DATBAO
+
+select * from KHACHHANG
+select * from BAO_TCHI
+select * from PHATHANH
+select * from KHACHHANG
+
+--Truy van --
+--1
+select distinct A.MaBaoTC,Ten,GiaBan
+from BAO_TCHI A,PHATHANH B
+where A.MaBaoTC =B.MaBaoTC and DinhKy =N'Tuần Báo'
+
+--2
+select *
+from BAO_TCHI 
+where MaBaoTC like 'P%'
+
+--3
+select TenKH,DiaChi
+from KHACHHANG A,DATBAO B,BAO_TCHI C
+where A.MaKH = B.MaKH and B.MaBaoTC = C.MaBaoTC and C.MaBaoTC like 'PN%'
+
+--5
+select *
+from KHACHHANG 
+where MaKH not in ( select X.MaKH
+					from  DATBAO X,BAO_TCHI Y
+					where X.MaBaoTC = Y.MaBaoTC and Ten=N'Thanh niên')								
+
+--6
+select TenKH,COUNT(B.MaBaoTC) as SoToBaoDat
+from KHACHHANG A,DATBAO B,BAO_TCHI C
+where A.MaKH = B.MaKH and B.MaBaoTC = C.MaBaoTC 
+group by TenKH
+
+--7
+select TenKH,Ten
+from KHACHHANG A,DATBAO B,BAO_TCHI C
+where A.MaKH = B.MaKH and B.MaBaoTC = C.MaBaoTC and  YEAR(NgayDM) =2004
+group by TenKH,Ten
+
+--8
+select TenKH,Ten,DinhKy,SLMua,SUM(SLMua*GiaBan) as SoTien
+from KHACHHANG A,DATBAO B,BAO_TCHI C
+where A.MaKH = B.MaKH and B.MaBaoTC = C.MaBaoTC
+group by TenKH,Ten,DinhKy,SLMua
+
+--9
+select Ten,DinhKy,SLMua,SUM(SLMua*GiaBan) as SoTien
+from DATBAO B,BAO_TCHI C
+where  B.MaBaoTC = C.MaBaoTC
+group by Ten,DinhKy,SLMua
+
+
+
