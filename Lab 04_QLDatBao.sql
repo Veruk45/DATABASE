@@ -129,5 +129,43 @@ from DATBAO B,BAO_TCHI C
 where  B.MaBaoTC = C.MaBaoTC
 group by Ten,DinhKy,SLMua
 
+--10
+select MaBaoTC,Ten,DinhKy
+from BAO_TCHI 
+where MaBaoTC like 'T%'
 
+--11 <Not answer yet>
 
+--12
+select C.MaBaoTC,Ten,DinhKy,SUM(SLMua) as SLMuaNhieuNhat
+from  DATBAO B,BAO_TCHI C
+where B.MaBaoTC =C.MaBaoTC 
+group by C.MaBaoTC,Ten,DinhKy
+having SUM(SLMua) >= all (select SUM(X.SLMua)
+			from DATBAO X,BAO_TCHI Y
+		        where X.MaBaoTC = Y.MaBaoTC
+			group by X.MaBaoTC)
+
+--13
+select A.MaKH,TenKH,SUM(SLMua) as KH_DatMuaNhieuNhat
+from KHACHHANG A, DATBAO B
+where A.MaKH= B.MaKH
+group by A.MaKH,TenKH
+having SUM(SLMua) >= all (select SUM(SLMua)
+			from KHACHHANG X,DATBAO Y
+			where X.MaKH =Y.MaKH
+			group by X.MaKH)
+
+--14
+select B.MaBaoTC,Ten,DinhKy,COUNT(NgayPH) as PH_2Lan
+from PHATHANH A,BAO_TCHI B
+where A.MaBaoTC =B.MaBaoTC
+group by B.MaBaoTC,Ten,DinhKy
+having COUNT(NgayPH) =2
+
+--15
+select A.MaKH,TenKH,COUNT(MaBaoTC) as DatMua_3
+from KHACHHANG A,DATBAO B
+where A.MaKH=B.MaKH
+group by A.MaKH,TenKH
+having COUNT(MaBaoTC) >=3
