@@ -76,3 +76,65 @@ insert into Lich_TourDL values ('T004', '29/04/2017', N'Dũng', '35', N'Lê ng�
 insert into Lich_TourDL values ('T001', '30/04/2017', N'Nam', '25', N'Trần Nam')
 insert into Lich_TourDL values ('T003', '15/06/2017', N'Vân', '20', N'Trịnh Bá')
 select * from Lich_TourDL
+
+--Truy Van--
+--1
+select A.MaTour,TongSoNgay
+from Tour A,Tour_TP B,ThanhPho C
+where A.MaTour =B.MaTour and B.MaTP =C.MaTP and TongSoNgay between 3 and 5
+group by A.MaTour,TongSoNgay
+
+--2
+select *
+from Lich_TourDL 
+where MONTH(NgayKH) =2 and YEAR(NgayKH) = 2017
+
+--3
+select  A.MaTour,C.MaTP,TenTP
+from Tour A,Tour_TP B,ThanhPho C
+where  A.MaTour=B.MaTour	and B.MaTP=C.MaTP 
+													and C.MaTP not in (select MaTP
+																						from ThanhPho 
+																						where TenTP=N'Nha Trang'
+																						)
+--4
+select C.MaTP,TenTP,COUNT(A.MaTour) as SLTour
+from Tour A,Tour_TP B,ThanhPho C
+where A.MaTour=B.MaTour and B.MaTP=C.MaTP
+group by C.MaTP,TenTP
+
+--5
+select TenHDV,COUNT(B.MaTour) as SLTourDaLam
+from Tour A, Lich_TourDL B
+where A.MaTour =B.MaTour
+group by TenHDV
+
+--6
+select TenTP,COUNT(B.MaTP) as TPCoNhieu_Tour
+from Tour_TP B ,ThanhPho C
+where  B.MaTP=C.MaTP 
+group by TenTP
+having  COUNT(B.MaTP) >= all (select COUNT(X.MaTP)
+													from Tour_TP X,ThanhPho Y
+													where X.MaTP=Y.MaTP
+													group by X.MaTour)
+
+--7 error
+--8 đi qua thành phố đà lạt
+select B.MaTour,SUM(SoNgay) as SoNgay
+from Lich_TourDL A, Tour_TP B,ThanhPho C
+where  A.MaTour=B.MaTour and B.MaTP =C.MaTP and TenTP =N'Đà Lạt'
+group by B.MaTour
+order by B.MaTour
+															
+--9
+select A.MaTour,SUM(SoNguoi) as SLThamGiaNhieuNhat
+from Tour A,Lich_TourDL B
+where  A.MaTour= B.MaTour
+group by A.MaTour
+having SUM(SoNguoi) >= all (select SUM(SoNguoi)
+													from Tour X,Lich_TourDL Y
+													where X.MaTour =Y.MaTour
+													group by X.MaTour)
+
+--10 error
